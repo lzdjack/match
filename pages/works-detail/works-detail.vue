@@ -10,11 +10,11 @@
 				<view class="mr-3"></view>
 			</view>
 		</view>
-		<view class="main__content w-100 h-100">
+		<view class="main__content w-100 h-100" @click="handleGo">
 			<image class="w-100 h-100" src="../../static/bg.png"></image>
 		</view>
 		<u-popup :show="show" :overlay="false" :round="20" mode="bottom">
-			<view :style="{height: $u.addUnit($u.getPx(height))}">
+			<view :style="{height: $u.addUnit($u.getPx(height))}" @touchmove="handleMove">
 				<view class="flex justify-center align-center" @click="open">
 					<view class="popup__move"></view>
 				</view>
@@ -40,13 +40,15 @@
 			return {
 				show: false,
 				height: 140,
-				isUp: false
+				isUp: false,
+				custom: {}
 			}
 		},
 		onLoad() {
+			this.custom = wx.getMenuButtonBoundingClientRect()
 			setTimeout(() => {
 				this.show = true
-			}, 200)
+			}, 50)
 		},
 		methods: {
 			open() {
@@ -55,14 +57,23 @@
 					this.height = 140
 				} else {
 					this.isUp = true
-					this.height = uni.$u.sys().screenHeight - uni.$u.sys().statusBarHeight - 44
+					const customHeight = this.custom.bottom + this.custom.top - uni.$u.sys().statusBarHeight
+					this.height = uni.$u.sys().screenHeight - customHeight - uni.$u.sys().safeAreaInsets.bottom
 				}
 			},
 			back() {
 				this.show = false
 				setTimeout(() => {
 					uni.navigateBack()
-				}, 200)
+				}, 50)
+			},
+			handleGo() {
+				uni.navigateTo({
+					url: '/pages/works-detail/works-image'
+				})
+			},
+			handleMove(e) {
+				console.log('----------', e);
 			}
 		}
 	}
