@@ -1,5 +1,5 @@
 <template>
-	<view :class="[index % 2 == 0 ? 'mr-3' : '', 'content mt-4']" @click="handleClick">
+	<view :class="[index % 2 == 0 ? 'ml-3' : '', 'content mt-4']" @click="handleClick">
 		<u-image :showLoading="true" :src="item.url" width="320rpx" height="290rpx"></u-image>
 		<view class="content__title">{{ item.title }}</view>
 	</view>
@@ -27,6 +27,8 @@
 
 <style scoped lang="scss">
 	.content {
+		width: 320rpx;
+
 		&__title {
 			font-size: 28rpx;
 			font-weight: 600;

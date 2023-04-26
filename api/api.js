@@ -4,12 +4,9 @@ import {
 import {
 	isArray
 } from 'lodash-es'
-import {
-	data
-} from "../uni_modules/uview-ui/libs/mixin/mixin";
 
-const CSZP_LIST = '/cszplb';
-const CSZP_DETAIL = '/cszpxx'
+const CSZP_LIST = '/xcxio/data.aspx';
+const CSZP_DETAIL = '/xcxio/data.aspx'
 const PHONE_ZC = '/sjyzm';
 const PHONE_YZ = '/yzmyz';
 const ENROLL = '/csyhbm';
@@ -21,8 +18,8 @@ const ENROLL = '/csyhbm';
  * @author: *
  */
 export function getPhoneApi(phone) {
-	return http.post(PHONE_ZC, data: {
-		phone
+	return http.post(PHONE_ZC, {
+		phone,
 	})
 }
 
@@ -33,7 +30,7 @@ export function getPhoneApi(phone) {
  * @author: *
  */
 export function yzPhoneApi(phone) {
-	return http.post(PHONE_YZ, data: {
+	return http.post(PHONE_YZ, {
 		phone
 	})
 }
@@ -54,8 +51,12 @@ export async function enrollApi(data) {
  * @return: {*}
  * @author: *
  */
-export function queryWorksListApi(data) {
-	return http.get(CSZP_LIST, data)
+export function queryWorksListApi() {
+	return http.get(CSZP_LIST, {
+		params: {
+			act: 'list'
+		}
+	})
 }
 
 /**
@@ -64,6 +65,11 @@ export function queryWorksListApi(data) {
  * @return: {*}
  * @author: *
  */
-export function findByIdWorksDetailApi() {
-	return http.post(CSZP_DETAIL, data)
+export function findByIdWorksDetailApi(id) {
+	return http.get(CSZP_DETAIL, {
+		params: {
+			act: 'getpbyid',
+			pid: id
+		}
+	})
 }

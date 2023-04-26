@@ -11,7 +11,7 @@
 			</view>
 		</view>
 		<view class="main__content w-100 h-100" @click="handleGo">
-			<image class="w-100 h-100" src="../../static/bg.png"></image>
+			<image class="w-100 h-100" :src="dataInfo.url"></image>
 		</view>
 		<u-popup :show="show" :overlay="false" :round="20" mode="bottom">
 			<view :style="{height: $u.addUnit($u.getPx(height))}" @touchmove="handleMove">
@@ -19,13 +19,11 @@
 					<view class="popup__move"></view>
 				</view>
 				<view class="popup__content mx-4">
-					<view class="popup__content__title">通州燃灯塔吉运门铃</view>
-					<view class="popup__content__sub">文汇京津际（北京）文化产业发展有限公司</view>
+					<view class="popup__content__title">{{ dataInfo.title }}</view>
+					<view class="popup__content__sub">{{ dataInfo.subTitle}}</view>
 					<template v-if="isUp">
 						<view class="popup__content__pro">作品简介</view>
-						<view class="popup__content__dec">燃灯佛舍利塔--萦绕千年的叮铃声
-							燃灯佛舍利塔始建于北周时期，距今已有一千四百多年历史，它是通州最古老、最著名的古塔，也是运河岸边标志性建筑。燃灯塔每层每檐每角都悬有铜制风铃，全塔悬挂铜铃两千余枚,属燃灯塔七绝之一。铜铃都是各个朝代的善男信女所捐赠，声声悠扬，祈福平安吉祥。
-							燃灯塔吉运门铃外形依照古塔门形设计，燃灯塔原比例微缩容纳于实木龛内，黄铜雕刻，精工细作，铜铃巧妙与木龛结合，铃碗朝上、铃珠悬于碗内代指供奉之意。每一次开门都仿佛得到佛塔的护佑，悦耳的叮铃声，满满的幸福感。
+						<view class="popup__content__dec">{{ dataInfo.description }}
 						</view>
 					</template>
 				</view>
@@ -35,22 +33,71 @@
 </template>
 
 <script>
+	import {
+		findByIdWorksDetailApi
+	} from '@/api/api.js'
+	import {
+		isEmpty
+	} from 'lodash-es'
+	import {
+		showLoading,
+		hideLoading,
+		showToast
+	} from '@/utils/loading.js';
 	export default {
 		data() {
 			return {
+				id: null,
 				show: false,
 				height: 140,
 				isUp: false,
-				custom: {}
+				custom: {},
+				dataInfo: {
+					id: '',
+					title: '',
+					subTitle: '',
+					description: '',
+					url: ''
+				}
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			if (e && !isEmpty(e) && e.id) {
+				this.id = e.id
+			} else {
+				showToast('数据异常');
+			}
+
 			this.custom = wx.getMenuButtonBoundingClientRect()
 			setTimeout(() => {
 				this.show = true
 			}, 50)
+			this.init()
 		},
 		methods: {
+			async init() {
+				try {
+					showLoading();
+					const res = await findByIdWorksDetailApi(this.id);
+
+					hideLoading();
+					if (isEmpty(res)) {
+						showToast('数据异常');
+					} else {
+						const data = res[0];
+						this.dataInfo = {
+							id: data.Id,
+							title: data.Enrollname,
+							subTitle: data.Schoolname,
+							description: data.Createnote,
+							url: data.filenames
+						}
+					}
+				} catch (e) {
+					hideLoading();
+					showToast('发生异常');
+				}
+			},
 			open() {
 				if (this.isUp) {
 					this.isUp = false
@@ -69,7 +116,7 @@
 			},
 			handleGo() {
 				uni.navigateTo({
-					url: '/pages/works-detail/works-image'
+					url: `/pages/works-detail/works-image?url=${this.dataInfo.url}`
 				})
 			},
 			handleMove(e) {

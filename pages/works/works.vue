@@ -17,29 +17,16 @@
 
 <script>
 	import ListItem from './list-item.vue'
+	import {
+		queryWorksListApi
+	} from '@/api/api.js'
 	export default {
 		components: {
 			ListItem
 		},
 		data() {
 			return {
-				dataList: [{
-						title: '大运河拼图剪纸系列',
-						url: 'https://cdn.uviewui.com/uview/album/1.jpg'
-					},
-					{
-						title: '大运河拼图剪纸系列',
-						url: 'https://cdn.uviewui.com/uview/album/1.jpg'
-					},
-					{
-						title: '大运河拼图剪纸系列',
-						url: 'https://cdn.uviewui.com/uview/album/1.jpg'
-					},
-					{
-						title: '大运河拼图剪纸系列',
-						url: 'https://cdn.uviewui.com/uview/album/1.jpg'
-					},
-				],
+				dataList: [],
 				tabs: [{
 					name: '文创作品'
 				}, {
@@ -52,9 +39,11 @@
 
 		},
 		methods: {
-			goTo() {
+			goTo({
+				id
+			}) {
 				uni.navigateTo({
-					url: '/pages/works-detail/works-detail'
+					url: `/pages/works-detail/works-detail?id=${id}`
 				})
 			},
 			handleClick(arg) {
@@ -62,9 +51,15 @@
 			},
 			async queryList(pageNo, pageSize) {
 				try {
-					// const res = await getAllOrderApi(this.getOpenId);
+					const res = await queryWorksListApi();
 
-					this.$refs.paging.complete(this.dataList);
+					const list = res.map(item => ({
+						title: item.Enrollname,
+						url: item.filenames,
+						id: item.Id
+					}))
+
+					this.$refs.paging.complete(list);
 				} catch (e) {
 					this.$refs.paging.complete(false);
 				}

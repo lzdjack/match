@@ -6,12 +6,12 @@ export default {
 	/**
 	 * 开发环境api
 	 */
-	DEV_BASE_API: 'https://mumar.wbyun.net/IO',
+	DEV_BASE_API: 'https://tgcid.wbyun.net',
 
 	/**
 	 * 生产环境api
 	 */
-	PROD_BASE_API: 'http://10.201.2.60:8004',
+	PROD_BASE_API: 'https://tgcid.wbyun.net',
 }
 
 // 百度云api

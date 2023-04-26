@@ -14,13 +14,13 @@
 		<swiper class="works-swiper__wrapper" @change="handleChange" :style="{
 				height: $u.addUnit(height),
 			}">
-			<swiper-item v-for="(item,index) in list" class="works-swiper__wrapper__item">
+			<swiper-item v-for="(item,index) in list" :key="index" class="works-swiper__wrapper__item">
 				<movable-area scale-area class="works-swiper__wrapper__item__area">
 					<movable-view class="w-100 h-100" :scale="true" direction="all" :scale-min="1" :scale-max="10">
 						<view class="works-swiper__wrapper__item__area__wrapper">
 							<image class="works-swiper__wrapper__item__area__wrapper__image" :style="{
 							height: $u.addUnit(height)
-						}" src="../../static/bg.png" mode="aspectFill"></image>
+						}" :src="url" mode="aspectFill"></image>
 						</view>
 					</movable-view>
 				</movable-area>
@@ -41,12 +41,14 @@
 				indicatorActiveColor: '#FFFFFF',
 				indicatorInactiveColor: 'rgba(255, 255, 255, 0.35)',
 				currentIndex: 0,
-				list: [1, 2, 3],
+				list: [1],
 				indicatorMode: 'line',
-				height: 0
+				height: 0,
+				url: ''
 			}
 		},
-		onLoad() {
+		onLoad(e) {
+			this.url = e.url
 			this.height = uni.$u.sys().screenHeight
 		},
 		methods: {
