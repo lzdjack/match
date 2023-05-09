@@ -1,12 +1,71 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"easycom": {
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue",
+		"^l-(.*)": "@/components/l-$1/l-$1.vue",
+		"^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "@/uni_modules/z-paging/components/z-paging$1/z-paging$1.vue"
+	},
+	"pages": [
 		{
-			"path": "pages/index/index",
+			"path": "pages/main/main",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/works/works",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/enroll/enroll",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
+			}
+		}
+
+		, {
+			"path": "pages/works-detail/works-detail",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
+			}
+
+		}, {
+			"path": "pages/works-detail/works-image",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
 			}
 		}
 	],
+	"tabBar": {
+		"color": "#666666",
+		"selectedColor": "#1C8FBA",
+		"borderStyle": "white",
+		"backgroundColor": "#F8F8F8",
+		"list": [{
+				"pagePath": "pages/main/main",
+				"iconPath": "static/main_1.png",
+				"selectedIconPath": "static/main_2.png",
+				"text": "首页"
+			}, {
+				"pagePath": "pages/works/works",
+				"iconPath": "static/works_1.png",
+				"selectedIconPath": "static/works_2.png",
+				"text": "往届优秀作品"
+			},
+			{
+				"pagePath": "pages/enroll/enroll",
+				"text": "报名入口",
+				"iconPath": "static/enroll_1.png",
+				"selectedIconPath": "static/enroll_2.png"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
