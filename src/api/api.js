@@ -2,9 +2,8 @@ import { http } from "@/utils/http/index.js";
 
 const CSZP_LIST = "/xcxio/data.aspx";
 const CSZP_DETAIL = "/xcxio/data.aspx";
-const PHONE_ZC = "/sjyzm";
-const PHONE_YZ = "/yzmyz";
-const ENROLL = "/csyhbm";
+const PHONE_YZ = "/xcxio/data.aspx";
+const ENROLL = "/xcxio/data.aspx";
 
 /**
  * @description: 获取手机验证码
@@ -13,20 +12,11 @@ const ENROLL = "/csyhbm";
  * @author: *
  */
 export function getPhoneApi(phone) {
-  return http.post(PHONE_ZC, {
-    phone,
-  });
-}
-
-/**
- * @description: 验证手机验证码
- * @param params
- * @return: {*}
- * @author: *
- */
-export function yzPhoneApi(phone) {
-  return http.post(PHONE_YZ, {
-    phone,
+  return http.get(PHONE_YZ, {
+    params: {
+      act: "getcode",
+      pho: phone,
+    },
   });
 }
 
@@ -37,7 +27,11 @@ export function yzPhoneApi(phone) {
  * @author: *
  */
 export async function enrollApi(data) {
-  return http.get(ENROLL, data);
+  return http.post(ENROLL, {
+    ...data,
+    act: "savemydata",
+    uid: 101,
+  });
 }
 
 /**

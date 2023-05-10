@@ -1,145 +1,274 @@
 <template>
-	<view class="main">
-		<view class="main__background"></view>
-		<view class="main__content" :style="customBarStyle">
-			<view class="main__content__card">
-				<image class="main__content__card__image" src="../../static/top.png"></image>
-			</view>
-			<view class="main__content__time">
-				<image class="main__content__time__image" src="../../static/time.png"></image>
-			</view>
-			<view class="main__content__intro">
-				<view class="font-lg font-weight-bold main__content__intro-line main__content__intro__title">大赛介绍</view>
-				<view class="flex-column justify-center align-center font main__content__intro-block">
-					<view class="text-center main__content__intro-line font font-weight-normal">悠悠运河，流淌千年， </view>
-					<view class="text-center main__content__intro-line font font-weight-normal">孕育了博大精深的大运河文化</view>
-					<view class="text-center main__content__intro-line font font-weight-normal"> 第三届大运河文化创新创意设计大赛</view>
-					<view class="text-center main__content__intro-line font font-weight-normal">以“创意，应‘运’而生”为主题</view>
-					<view class="text-center main__content__intro-line font font-weight-normal">开设六大赛道，广泛邀请设计爱好者和设计单位
-					</view>
-					<view class="text-center main__content__intro-line font font-weight-normal">围绕运河文化进行创意设计</view>
-					<view class="text-center main__content__intro-line font font-weight-normal">以文创精神激荡历史长河</view>
-					<view class="text-center main__content__intro-line font font-weight-normal">让悠久的运河文化融入当代美好生活！</view>
-					<view class="text-center main__content__intro-line font font-weight-normal">奖金总额120万元人民币</view>
-				</view>
-			</view>
-			<view class="main__content__org">
-				<view class="font-lg font-weight-bold main__content__org__title">组织机构</view>
+  <view class="main">
+    <view class="main__background"></view>
+    <view class="main__content" :style="customBarStyle">
+      <view class="main__content__card">
+        <image
+          class="main__content__card__image"
+          :src="getUrl('index01.png')"
+        ></image>
+      </view>
+      <view class="main__content__time">
+        <image
+          class="main__content__time__image"
+          :src="getUrl('index02.png')"
+        ></image>
+      </view>
+      <view class="main__content__intro">
+        <view
+          class="font-lg font-weight-bold main__content__intro-line main__content__intro__title"
+          >大赛介绍</view
+        >
+        <view
+          class="flex-column justify-center align-center font main__content__intro-block"
+        >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >悠悠运河，流淌千年，
+          </view>
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >孕育了博大精深的大运河文化</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+          >
+            第三届大运河文化创新创意设计大赛</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >以“创意，应‘运’而生”为主题</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >开设六大赛道，广泛邀请设计爱好者和设计单位
+          </view>
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >围绕运河文化进行创意设计</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >以文创精神激荡历史长河</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >让悠久的运河文化融入当代美好生活！</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >奖金总额120万元人民币</view
+          >
+        </view>
+      </view>
+      <view class="main__content__org">
+        <view class="font-lg font-weight-bold main__content__org__title"
+          >组织机构</view
+        >
 
-				<image class="main__content__org__image" src="../../static/org.png"></image>
-			</view>
-			<view class="main__content__match">
-				<view class="font-lg font-weight-bold main__content__match__title">比赛时间</view>
+        <image
+          class="main__content__org__image"
+          :src="getUrl('index03.png')"
+        ></image>
+      </view>
+      <view class="main__content__match">
+        <view class="font-lg font-weight-bold main__content__match__title"
+          >比赛时间</view
+        >
 
-				<image class="main__content__match__image" src="../../static/match.png"></image>
-			</view>
-			<view class="main__content__track">
-				<view class="font-lg font-weight-bold main__content__track__title">六大赛道</view>
+        <image
+          class="main__content__match__image"
+          :src="getUrl('index04.png')"
+        ></image>
+      </view>
+      <view class="main__content__track">
+        <view class="font-lg font-weight-bold main__content__track__title"
+          >六大赛道</view
+        >
 
-				<u-tabs :list="tablist" @click="handleClick"></u-tabs>
-				<TabItem :content="tabItem" />
-			</view>
-			<view class="main__content__design">
-				<view class="font-lg font-weight-bold main__content__design__title">设计内容</view>
-				<view class="flex justify-between align-center">
-					<view class="flex-column align-center justify-center">
-						<image class="main__content__design-image" src="../../static/design1.png"></image>
-						<view class="text-center mt-2">产品设计类</view>
-					</view>
-					<view class="flex-column align-center justify-center">
-						<image class="main__content__design-image" src="../../static/design2.png"></image>
-						<view class="text-center mt-2">平面设计类</view>
-					</view>
-					<view class="flex-column align-center justify-center">
-						<image class="main__content__design-image" src="../../static/design3.png"></image>
-						<view class="text-center mt-2">数字文创设计类</view>
-					</view>
-				</view>
-			</view>
-			<view class="main__content__review">
-				<view class="font-lg font-weight-bold main__content__review__title">评审标准</view>
-				<scroll-view class="main__content__review__scroll" scroll-x="true" scroll-left="120">
-					<view class="main__content__review-image mr-2">
-						<image class="w-100 h-100" src="../../static/review1.png"></image>
-					</view>
-					<view class="main__content__review-image mr-2">
-						<image class="w-100 h-100" src="../../static/review2.png"></image>
-					</view>
-					<view class="main__content__review-image mr-2">
-						<image class="w-100 h-100" src="../../static/review3.png"></image>
-					</view>
-					<view class="main__content__review-image mr-2">
-						<image class="w-100 h-100" src="../../static/review4.png"></image>
-					</view>
-					<view class="main__content__review-image">
-						<image class="w-100 h-100" src="../../static/review5.png"></image>
-					</view>
-				</scroll-view>
-			</view>
+        <u-tabs :list="tablist" @click="handleClick"></u-tabs>
+        <TabItem :content="tabItem" />
+      </view>
+      <view class="main__content__design">
+        <view class="font-lg font-weight-bold main__content__design__title"
+          >设计内容</view
+        >
+        <view class="flex justify-between align-center">
+          <view class="flex-column align-center justify-center">
+            <image
+              class="main__content__design-image"
+              :src="getUrl('sj01.png')"
+            ></image>
+            <view class="text-center mt-2">产品设计类</view>
+          </view>
+          <view class="flex-column align-center justify-center">
+            <image
+              class="main__content__design-image"
+              :src="getUrl('sj02.png')"
+            ></image>
+            <view class="text-center mt-2">平面设计类</view>
+          </view>
+          <view class="flex-column align-center justify-center">
+            <image
+              class="main__content__design-image"
+              :src="getUrl('sj03.png')"
+            ></image>
+            <view class="text-center mt-2">数字文创设计类</view>
+          </view>
+        </view>
+      </view>
+      <view class="main__content__review">
+        <view class="font-lg font-weight-bold main__content__review__title"
+          >评审标准</view
+        >
+        <scroll-view
+          class="main__content__review__scroll"
+          scroll-x="true"
+          scroll-left="120"
+        >
+          <view class="main__content__review-image mr-2">
+            <image class="w-100 h-100" :src="getUrl('ps01.png')"></image>
+          </view>
+          <view class="main__content__review-image mr-2">
+            <image class="w-100 h-100" :src="getUrl('ps02.png')"></image>
+          </view>
+          <view class="main__content__review-image mr-2">
+            <image class="w-100 h-100" :src="getUrl('ps03.png')"></image>
+          </view>
+          <view class="main__content__review-image mr-2">
+            <image class="w-100 h-100" :src="getUrl('ps04.png')"></image>
+          </view>
+          <view class="main__content__review-image">
+            <image class="w-100 h-100" :src="getUrl('ps05.png')"></image>
+          </view>
+        </scroll-view>
+      </view>
 
-			<view class="main__content__notice">
-				<view class="font-lg font-weight-bold main__content__notice__title">参赛须知</view>
-				<view class="p-4 main__content__notice-block">
-					<view class="text-center mb-2 main__content__notice-title">报名要求</view>
-					<u-read-more ref="uReadMore" :toggle="true" :showHeight="80" closeText=" " :font-size="12"
-						open-text=" " color="#BBBBBB" :shadowStyle="shadowStyle">
-						<view class="main__content__notice-content">
-							<u-parse :content="content" @load="load"></u-parse>
-						</view>
-					</u-read-more>
-				</view>
-				<view class="p-4 mt-2 main__content__notice-block">
-					<view class="text-center mb-2 main__content__notice-title">作品要求</view>
-					<u-read-more ref="uReadMore" :toggle="true" :showHeight="80" closeText=" " :font-size="12"
-						open-text=" " color="#BBBBBB" :shadowStyle="shadowStyle">
-						<view class="main__content__notice-content">
-							<u-parse :content="worksContent" @load="load"></u-parse>
-						</view>
-					</u-read-more>
-				</view>
-			</view>
-		</view>
-	</view>
+      <view class="main__content__notice">
+        <view class="font-lg font-weight-bold main__content__notice__title"
+          >参赛须知</view
+        >
+        <view class="p-4 main__content__notice-block">
+          <view class="text-center mb-2 main__content__notice-title"
+            >报名要求</view
+          >
+          <u-read-more
+            ref="uReadMore"
+            :toggle="true"
+            :showHeight="80"
+            closeText=" "
+            :font-size="12"
+            open-text=" "
+            color="#BBBBBB"
+            :shadowStyle="shadowStyle"
+          >
+            <view class="main__content__notice-content">
+              <u-parse :content="content" @load="load"></u-parse>
+            </view>
+          </u-read-more>
+        </view>
+        <view class="p-4 mt-2 main__content__notice-block">
+          <view class="text-center mb-2 main__content__notice-title"
+            >作品要求</view
+          >
+          <u-read-more
+            ref="uReadMore"
+            :toggle="true"
+            :showHeight="80"
+            closeText=" "
+            :font-size="12"
+            open-text=" "
+            color="#BBBBBB"
+            :shadowStyle="shadowStyle"
+          >
+            <view class="main__content__notice-content">
+              <u-parse :content="worksContent" @load="load"></u-parse>
+            </view>
+          </u-read-more>
+        </view>
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
-	import TabItem from './tab-content.vue'
-	export default {
-		components: {
-			TabItem
-		},
-		data() {
-			return {
-				customBar: 0,
-				tablist: [{
-						name: '大运河文化旅游景区',
-						content: [{
-							title: '这是一个标题',
-							image: '../../static/match.png'
-						}]
-					}, {
-						name: '数字文创',
-						content: [{
-							title: '这是一个标题',
-							image: '../../static/org.png'
-						}]
-					},
-					{
-						name: '副中心公共文化',
-						content: [{
-							title: '这是一个标题',
-							image: '../../static/match.png'
-						}]
-					}
-				],
-				tabItem: [{
-					title: '这是一个标题',
-					image: '../../static/match.png'
-				}],
-				content: `1.参赛机构或个人于大赛官网www.tgcid.org注册参赛，经组委会审核通过后进入大赛流程。大赛全程将为参赛机构和人员提供人工咨询和技术支持（也可关注官方微信服务号：大运河文化遗产文创发展联盟）。</br> 
+import TabItem from "./tab-content.vue";
+import { getUrl } from "@/helper/imageHelper";
+
+export default {
+  components: {
+    TabItem,
+  },
+  data() {
+    return {
+      getUrl,
+      customBar: 0,
+      tablist: [
+        {
+          name: "大运河文化旅游景区",
+          content: [
+            {
+              title: "大运河文化旅游景区",
+              image: getUrl("sd01.png"),
+            },
+          ],
+        },
+        {
+          name: "数字文创",
+          content: [
+            {
+              title: "数字文创",
+              image: getUrl("sd02.png"),
+            },
+          ],
+        },
+        {
+          name: "副中心公共文化",
+          content: [
+            {
+              title: "副中心公共文化",
+              image: getUrl("sd03.png"),
+            },
+          ],
+        },
+        {
+          name: "大运河IP形象设计",
+          content: [
+            {
+              title: "大运河IP形象设计",
+              image: getUrl("sd04.png"),
+            },
+          ],
+        },
+        {
+          name: "博物馆方向",
+          content: [
+            {
+              title: "博物馆方向",
+              image: getUrl("sd05.png"),
+            },
+          ],
+        },
+        {
+          name: "老字号与品牌方向",
+          content: [
+            {
+              title: "老字号与品牌方向",
+              image: getUrl("sd06.png"),
+            },
+          ],
+        },
+      ],
+      tabItem: [
+        {
+          title: "大运河文化旅游景区",
+          image: getUrl("sd01.png"),
+        },
+      ],
+      content: `1.参赛机构或个人于大赛官网www.tgcid.org注册参赛，经组委会审核通过后进入大赛流程。大赛全程将为参赛机构和人员提供人工咨询和技术支持（也可关注官方微信服务号：大运河文化遗产文创发展联盟）。</br> 
 						2.报名参赛在提交作品前请确保已经阅读并且愿意遵守相关活动规则，任何违反活动规则的作品，主办方有权取消其活动资格。 </br>
 						3.如多人合作，需征得所有合作者同意并标明所有合作者姓名。`,
-				worksContent: `
+      worksContent: `
 				1.作品需契合大赛主题，设计元素必须与运河及运河沿线文化有关，并满足设计需求单位的作品要求。</br> 
 				2. 作品上传需包含设计图、 效果图、 设计源文件， 及设计说明（ 包括不少于200字的创作说明、 量产说明、 成本与终端售价设定、 客户分析及其他说明等）。 图片格式报送JPG /
 				PNG格式文件； 分辨率300dpi； 设计图尺寸210mm（ 宽）× 297 mm（ 高）。</br>
@@ -160,193 +289,185 @@
 				8． 参赛作品必须是原创作品， 曾经参加过国家级、 省级同类活动并获奖的作品不予评奖。</br>
 				9． 参赛选手参赛作品经大赛评审获奖并领取奖金的， 该作品著作权由需求方和参赛选手共同享有， 参赛选手享有该作品的署名权， 需求方享有除署名权之外的其他著作权权利。</br>
 				10．参赛选手参赛作品未获奖的， 该作品著作权归参赛选手所有， 大赛主办方对所有参赛和获奖作品享有展览展示的权利。 `,
-				shadowStyle: {
-					backgroundImage: "linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, rgb(245 250 255 / 1) 80%)",
-					paddingTop: "100px",
-					marginTop: "-100px",
-				}
-			}
-		},
-		computed: {
-			customBarStyle() {
-				return `margin-top: ${this.customBar}px`
-			}
-		},
-		onLoad() {
-			uni.getSystemInfo({
-				success: (e) => {
-					const statusBar = e.statusBarHeight;
-					const custom = wx.getMenuButtonBoundingClientRect()
-					this.customBar = custom.bottom + custom.top - e.statusBarHeight
-				}
-			})
-		},
-		methods: {
-			handleClick({
-				content
-			}) {
-				this.tabItem = content
-			},
-			load() {
-				this.$refs.uReadMore.init();
-			}
-		}
-	}
+      shadowStyle: {
+        backgroundImage:
+          "linear-gradient(-180deg, rgba(255, 255, 255, 0) 0%, rgb(245 250 255 / 1) 80%)",
+        paddingTop: "100px",
+        marginTop: "-100px",
+      },
+    };
+  },
+  computed: {
+    customBarStyle() {
+      return `margin-top: ${this.customBar}px`;
+    },
+  },
+  onLoad() {
+    uni.getSystemInfo({
+      success: (e) => {
+        const statusBar = e.statusBarHeight;
+        const custom = wx.getMenuButtonBoundingClientRect();
+        this.customBar = custom.bottom + custom.top - e.statusBarHeight;
+      },
+    });
+  },
+  methods: {
+    handleClick({ content }) {
+      this.tabItem = content;
+    },
+    load() {
+      this.$refs.uReadMore.init();
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
-	.main {
-		&__background {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			top: 0;
-			background: linear-gradient(180deg, #0546D6 0%, rgba(5, 70, 214, 0) 100%);
-			width: 750rpx;
-			height: 700rpx;
-		}
+.main {
+  &__background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background: linear-gradient(180deg, #0546d6 0%, rgba(5, 70, 214, 0) 100%);
+    width: 750rpx;
+    height: 700rpx;
+  }
 
-		&__content {
-			margin: 34rpx;
+  &__content {
+    margin: 34rpx;
 
-			&__card {
-				&__image {
-					height: 638rpx;
-					width: 100%;
-				}
-			}
+    &__card {
+      &__image {
+        height: 638rpx;
+        width: 100%;
+      }
+    }
 
-			&__time {
-				margin-top: 20rpx;
+    &__time {
+      margin-top: 20rpx;
 
-				&__image {
-					height: 902rpx;
-					width: 100%;
-				}
-			}
+      &__image {
+        height: 902rpx;
+        width: 100%;
+      }
+    }
 
-			&__intro {
+    &__intro {
+      &__title {
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+      }
 
-				&__title {
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-				}
+      &-block {
+        padding: 40rpx 0;
+        background: #f5faff;
+        border-radius: 16rpx;
+      }
 
-				&-block {
-					padding: 40rpx 0;
-					background: #F5FAFF;
-					border-radius: 16rpx;
-				}
+      &-line {
+        line-height: 54rpx;
+      }
+    }
 
-				&-line {
-					line-height: 54rpx;
-				}
-			}
+    &__org {
+      &__image {
+        height: 380rpx;
+        width: 100%;
+      }
 
-			&__org {
+      &__title {
+        margin-top: 100rpx;
+        margin-bottom: 40rpx;
+        line-height: 56rpx;
+      }
+    }
 
-				&__image {
-					height: 380rpx;
-					width: 100%;
-				}
+    &__match {
+      &__title {
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        line-height: 56rpx;
+      }
 
-				&__title {
-					margin-top: 100rpx;
-					margin-bottom: 40rpx;
-					line-height: 56rpx;
-				}
-			}
+      &__image {
+        height: 236rpx;
+        width: 100%;
+      }
+    }
 
-			&__match {
+    &__track {
+      &__title {
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        line-height: 56rpx;
+      }
 
-				&__title {
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-					line-height: 56rpx;
-				}
+      &__image {
+        height: 236rpx;
+        width: 100%;
+      }
+    }
 
-				&__image {
-					height: 236rpx;
-					width: 100%;
-				}
-			}
+    &__design {
+      &__title {
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        line-height: 56rpx;
+      }
 
-			&__track {
+      &-image {
+        width: 210rpx;
+        height: 210rpx;
+      }
+    }
 
-				&__title {
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-					line-height: 56rpx;
-				}
+    &__review {
+      &__title {
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        line-height: 56rpx;
+      }
 
-				&__image {
-					height: 236rpx;
-					width: 100%;
-				}
-			}
+      &__scroll {
+        white-space: nowrap;
+        width: 100%;
+      }
 
-			&__design {
+      &-image {
+        width: 504rpx;
+        height: 252rpx;
+        display: inline-block;
+      }
+    }
 
-				&__title {
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-					line-height: 56rpx;
-				}
+    &__notice {
+      &-block {
+        background: #f5faff;
+        border-radius: 16rpx;
+      }
 
-				&-image {
-					width: 210rpx;
-					height: 210rpx;
-				}
-			}
+      &__title {
+        margin-top: 80rpx;
+        margin-bottom: 40rpx;
+        line-height: 56rpx;
+      }
 
-			&__review {
+      &-title {
+        color: #0b164f;
+        font-size: 32rpx;
+        font-weight: 900;
+        line-height: 44rpx;
+      }
 
-				&__title {
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-					line-height: 56rpx;
-				}
-
-				&__scroll {
-					white-space: nowrap;
-					width: 100%;
-				}
-
-				&-image {
-					width: 504rpx;
-					height: 252rpx;
-					display: inline-block;
-				}
-			}
-
-			&__notice {
-
-				&-block {
-					background: #F5FAFF;
-					border-radius: 16rpx;
-				}
-
-				&__title {
-					margin-top: 80rpx;
-					margin-bottom: 40rpx;
-					line-height: 56rpx;
-				}
-
-				&-title {
-					color: #0B164F;
-					font-size: 32rpx;
-					font-weight: 900;
-					line-height: 44rpx;
-				}
-
-				&-content {
-					font-size: 28rpx;
-					color: #0B164F;
-					line-height: 40rpx;
-					font-weight: 400;
-				}
-			}
-		}
-	}
+      &-content {
+        font-size: 28rpx;
+        color: #0b164f;
+        line-height: 40rpx;
+        font-weight: 400;
+      }
+    }
+  }
+}
 </style>
