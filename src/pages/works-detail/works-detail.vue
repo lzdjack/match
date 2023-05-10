@@ -1,6 +1,6 @@
 <template>
   <view class="main">
-    <view>
+    <view @click="isUp && open()">
       <u-status-bar />
       <view
         class="flex justify-between align-center main__header"
@@ -15,6 +15,7 @@
     </view>
     <view
       class="main__content w-100 h-100 flex justify-center align-center"
+      :style="{ height: $u.addUnit($u.getPx(getImageHeight)) }"
       @click="handleGo"
     >
       <u--image
@@ -26,11 +27,14 @@
       ></u--image>
     </view>
     <u-popup :show="show" :overlay="false" :round="20" mode="bottom">
-      <view
-        :style="{ height: $u.addUnit($u.getPx(height)) }"
-        @touchmove="handleMove"
-      >
-        <view class="flex justify-center align-center">
+      <view :style="{ height: $u.addUnit($u.getPx(height)) }">
+        <view
+          class="flex justify-center align-center"
+          @click="open"
+          @touchmove="handleMove"
+          @touchend="handleEnd"
+          @touchstart="handleStart"
+        >
           <view class="popup__move"></view>
         </view>
         <scroll-view
@@ -40,12 +44,8 @@
           <view class="popup__content mx-4">
             <view class="popup__content__title">{{ dataInfo.title }}</view>
             <view class="popup__content__sub">{{ dataInfo.subTitle }}</view>
-            <template v-if="isUp">
-              <view class="popup__content__pro">作品简介</view>
-              <view class="popup__content__dec"
-                >{{ dataInfo.description }}
-              </view>
-            </template>
+            <view class="popup__content__pro">作品简介</view>
+            <view class="popup__content__dec">{{ dataInfo.description }} </view>
           </view>
         </scroll-view>
       </view>
@@ -57,14 +57,17 @@
 import { findByIdWorksDetailApi } from "@/api/api.js";
 import { isEmpty } from "lodash-es";
 import { showLoading, hideLoading, showToast } from "@/utils/loading.js";
+const DEFINE_MODEL_HEIGHT = 280;
 export default {
   data() {
     return {
       id: null,
       show: false,
-      height: 140,
+      height: DEFINE_MODEL_HEIGHT,
       isUp: false,
       custom: {},
+      recordHeight: DEFINE_MODEL_HEIGHT,
+      currentHeight: 0,
       dataInfo: {
         id: "",
         title: "",
@@ -73,6 +76,16 @@ export default {
         url: "",
       },
     };
+  },
+  computed: {
+    getImageHeight() {
+      const statusBarHeight = uni.$u.sys().statusBarHeight;
+      const screenHeight = uni.$u.sys().screenHeight;
+      const appbarHeight = 44;
+      return (
+        screenHeight - statusBarHeight - appbarHeight - DEFINE_MODEL_HEIGHT - 60
+      );
+    },
   },
   onLoad(e) {
     if (e && !isEmpty(e) && e.id) {
@@ -114,16 +127,21 @@ export default {
     open() {
       if (this.isUp) {
         this.isUp = false;
-        this.height = 140;
+        this.height = DEFINE_MODEL_HEIGHT;
       } else {
         this.isUp = true;
-        const customHeight =
-          this.custom.bottom + this.custom.top - uni.$u.sys().statusBarHeight;
-        this.height =
-          uni.$u.sys().screenHeight -
-          customHeight -
-          uni.$u.sys().safeAreaInsets.bottom;
+        this.height = this.getFull();
       }
+    },
+    getFull() {
+      const customHeight =
+        this.custom.bottom + this.custom.top - uni.$u.sys().statusBarHeight;
+
+      return (
+        uni.$u.sys().screenHeight -
+        customHeight -
+        uni.$u.sys().safeAreaInsets.bottom
+      );
     },
     back() {
       this.show = false;
@@ -136,16 +154,43 @@ export default {
         url: `/pages/works-detail/works-image?url=${this.dataInfo.url}`,
       });
     },
+    handleStart(e) {
+      this.currentHeight = e.touches[0].clientY;
+    },
     handleMove(e) {
-      const height = e.touches[0].clientY;
-      const screenHeight = uni.$u.sys().screenHeight / 2;
+      const height = e.changedTouches[0].clientY;
+      const screenHeight = uni.$u.sys().screenHeight;
+      const bScreenHeight = screenHeight / 2;
+      const moveHeight = screenHeight - height; //手势越往下滑
 
-      console.log("----------", height, screenHeight);
+      // true：向上
+      // false: 向下
+      this.isUp = height - this.currentHeight > 10 ? false : true;
 
-      if (height < screenHeight) {
-        this.open();
+      if (moveHeight <= DEFINE_MODEL_HEIGHT) {
+        this.height = DEFINE_MODEL_HEIGHT;
+      } else if (moveHeight > bScreenHeight && this.isUp) {
+        this.height = this.getFull();
       } else {
-        this.height = height;
+        this.height = moveHeight;
+      }
+    },
+
+    handleEnd(e) {
+      const height = e.changedTouches[0].clientY;
+      const screenHeight = uni.$u.sys().screenHeight;
+      const bScreenHeight = screenHeight / 2;
+
+      const moveHeight = screenHeight - height;
+
+      if (moveHeight <= DEFINE_MODEL_HEIGHT) {
+        this.height = DEFINE_MODEL_HEIGHT;
+        this.recordHeight = this.height;
+      } else if (moveHeight > bScreenHeight) {
+        this.height = this.getFull();
+        this.recordHeight = this.height;
+      } else {
+        this.height = this.recordHeight;
       }
     },
   },
