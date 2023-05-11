@@ -15,33 +15,7 @@
         <view class="mr-3"></view>
       </view>
     </view>
-    <movable-area
-      scale-area
-      class="works-swiper__wrapper__item__area h-100 w-100"
-    >
-      <movable-view
-        class="w-100 h-100"
-        :scale="true"
-        direction="all"
-        :scale-min="1"
-        :scale-max="10"
-      >
-        <view
-          class="works-swiper__wrapper__item__area__wrapper flex justify-center align-center h-100 w-100"
-        >
-          <u--image
-            @touchend="dbclick"
-            customClass="works-swiper__wrapper__item__area__wrapper__image"
-            :showLoading="true"
-            :lazy-load="true"
-            :src="path"
-            :fade="true"
-            mode="aspectFill"
-          ></u--image>
-        </view>
-      </movable-view>
-    </movable-area>
-    <!-- <swiper
+    <swiper
       class="works-swiper__wrapper"
       @change="handleChange"
       :style="{
@@ -76,7 +50,7 @@
           </movable-view>
         </movable-area>
       </swiper-item>
-    </swiper> -->
+    </swiper>
     <view class="works-swiper__indicator">
       <u-swiper-indicator
         :indicatorActiveColor="indicatorActiveColor"

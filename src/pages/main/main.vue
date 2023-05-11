@@ -86,8 +86,36 @@
           >六大赛道</view
         >
 
-        <u-tabs :list="tablist" @click="handleClick"></u-tabs>
-        <TabItem :content="tabItem" />
+        <u-tabs
+          :activeStyle="{
+            color: '#0270EF',
+            fontSize: '32rpx',
+            fontWeight: 600,
+          }"
+          :inactiveStyle="{
+            color: '#666666',
+            fontSize: '32rpx',
+            fontWeight: 600,
+          }"
+          lineWidth="160rpx"
+          lineColor="linear-gradient(to right, #18AEFE 0%, #0270EF 100%)"
+          :current="current"
+          :list="tablist"
+          @click="handleTabChange"
+        ></u-tabs>
+        <swiper
+          class="main__content__track__swiper"
+          :current="current"
+          @change="handleChange"
+        >
+          <swiper-item
+            v-for="(item, index) in tablist"
+            :key="index"
+            class="main__content__track__swiper__item"
+          >
+            <TabItem :content="item.content" />
+          </swiper-item>
+        </swiper>
       </view>
       <view class="main__content__design">
         <view class="font-lg font-weight-bold main__content__design__title"
@@ -157,9 +185,10 @@
             :toggle="true"
             :showHeight="80"
             closeText=" "
-            :font-size="12"
+            :font-size="23"
             open-text=" "
             color="#BBBBBB"
+            textIndent="0"
             :shadowStyle="shadowStyle"
           >
             <view class="main__content__notice-content">
@@ -176,9 +205,10 @@
             :toggle="true"
             :showHeight="80"
             closeText=" "
-            :font-size="12"
+            :font-size="23"
             open-text=" "
             color="#BBBBBB"
+            textIndent="0"
             :shadowStyle="shadowStyle"
           >
             <view class="main__content__notice-content">
@@ -201,68 +231,51 @@ export default {
   },
   data() {
     return {
+      current: 0,
       getUrl,
       customBar: 0,
       tablist: [
         {
           name: "大运河文化旅游景区",
-          content: [
-            {
-              title: "大运河文化旅游景区",
-              image: getUrl("sd01.png"),
-            },
-          ],
+          content: {
+            title: "大运河文化旅游景区",
+            image: getUrl("sd01.png"),
+          },
         },
         {
           name: "数字文创",
-          content: [
-            {
-              title: "数字文创",
-              image: getUrl("sd02.png"),
-            },
-          ],
+          content: {
+            title: "数字文创",
+            image: getUrl("sd02.png"),
+          },
         },
         {
           name: "副中心公共文化",
-          content: [
-            {
-              title: "副中心公共文化",
-              image: getUrl("sd03.png"),
-            },
-          ],
+          content: {
+            title: "副中心公共文化",
+            image: getUrl("sd03.png"),
+          },
         },
         {
           name: "大运河IP形象设计",
-          content: [
-            {
-              title: "大运河IP形象设计",
-              image: getUrl("sd04.png"),
-            },
-          ],
+          content: {
+            title: "大运河IP形象设计",
+            image: getUrl("sd04.png"),
+          },
         },
         {
           name: "博物馆方向",
-          content: [
-            {
-              title: "博物馆方向",
-              image: getUrl("sd05.png"),
-            },
-          ],
+          content: {
+            title: "博物馆方向",
+            image: getUrl("sd05.png"),
+          },
         },
         {
           name: "老字号与品牌方向",
-          content: [
-            {
-              title: "老字号与品牌方向",
-              image: getUrl("sd06.png"),
-            },
-          ],
-        },
-      ],
-      tabItem: [
-        {
-          title: "大运河文化旅游景区",
-          image: getUrl("sd01.png"),
+          content: {
+            title: "老字号与品牌方向",
+            image: getUrl("sd06.png"),
+          },
         },
       ],
       content: `1.参赛机构或个人于大赛官网www.tgcid.org注册参赛，经组委会审核通过后进入大赛流程。大赛全程将为参赛机构和人员提供人工咨询和技术支持（也可关注官方微信服务号：大运河文化遗产文创发展联盟）。</br> 
@@ -312,8 +325,11 @@ export default {
     });
   },
   methods: {
-    handleClick({ content }) {
-      this.tabItem = content;
+    handleTabChange({ index }) {
+      this.current = index;
+    },
+    handleChange(e) {
+      this.current = e.detail.current;
     },
     load() {
       this.$refs.uReadMore.init();
@@ -398,6 +414,14 @@ export default {
     }
 
     &__track {
+      &__swiper {
+        height: 456rpx;
+        margin-top: 30rpx;
+
+        &__item {
+          height: 456rpx;
+        }
+      }
       &__title {
         margin-top: 80rpx;
         margin-bottom: 40rpx;

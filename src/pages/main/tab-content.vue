@@ -3,7 +3,7 @@
     <u--image
       :showLoading="true"
       :lazy-load="true"
-      :src="content[0]['image']"
+      :src="content['image']"
       width="100%"
       height="456rpx"
       :fade="true"
@@ -16,7 +16,7 @@ export default {
   name: "tab-content",
   props: {
     content: {
-      type: Array,
+      type: Object,
       required: true,
     },
   },

@@ -6,17 +6,18 @@
     ></u-notice-bar>
     <view class="mt-4 mx-5">
       <u--form
-        :borderBottom="false"
+        :borderBottom="true"
         labelPosition="left"
         :model="userInfo"
         ref="enrollform"
       >
         <u-form-item
+          customClass="h-10 flex justify-center"
           required
           label="姓&ensp;&ensp;&ensp;&ensp;名"
           prop="name"
           labelWidth="160rpx"
-          :borderBottom="false"
+          :borderBottom="true"
         >
           <u--input
             v-model="userInfo.name"
@@ -25,11 +26,12 @@
           ></u--input>
         </u-form-item>
         <u-form-item
+          customClass="h-10 flex justify-center"
           required
           label="性&ensp;&ensp;&ensp;&ensp;别"
           prop="sex"
           labelWidth="160rpx"
-          :borderBottom="false"
+          :borderBottom="true"
         >
           <u-radio-group v-model="userInfo.sex">
             <u-radio
@@ -43,11 +45,12 @@
           </u-radio-group>
         </u-form-item>
         <u-form-item
+          customClass="h-10 flex justify-center"
           required
           label="电子邮箱"
           prop="email"
           labelWidth="160rpx"
-          :borderBottom="false"
+          :borderBottom="true"
         >
           <u--input
             v-model="userInfo.email"
@@ -75,11 +78,12 @@
           </u-radio-group>
         </u-form-item> -->
         <u-form-item
+          customClass="h-10 flex justify-center"
           required
           label="入住身份"
           prop="face"
           labelWidth="160rpx"
-          :borderBottom="false"
+          :borderBottom="true"
         >
           <u-radio-group v-model="userInfo.face">
             <u-radio
@@ -94,11 +98,12 @@
         </u-form-item>
 
         <u-form-item
+          customClass="h-10 flex justify-center"
           required
           label="手&ensp;机&ensp;号"
           prop="phone"
           labelWidth="160rpx"
-          :borderBottom="false"
+          :borderBottom="true"
         >
           <u--input
             v-model="userInfo.phone"
@@ -110,11 +115,12 @@
           }}</text>
         </u-form-item>
         <u-form-item
+          customClass="h-10 flex justify-center"
           required
           label="验&ensp;证&ensp;码"
           prop="code"
           labelWidth="160rpx"
-          :borderBottom="false"
+          :borderBottom="true"
         >
           <u--input
             v-model="userInfo.code"
@@ -127,12 +133,12 @@
     <view class="mx-4">
       <u-button
         type="primary"
-        text="提交报名"
         shape="circle"
-        customStyle="margin-top: 100rpx;margin-bottom: 150rpx;"
+        customStyle="margin-top: 100rpx;margin-bottom: 150rpx;width: 630rpx"
         color="linear-gradient(to right, #3ED3EA 0%, #0270EF 100%)"
         @click="submit"
-      ></u-button>
+        ><text class="enroll__button__text">提交报名</text>
+      </u-button>
     </view>
     <u-code
       ref="uCode"
@@ -354,6 +360,12 @@ export default {
 
 <style scoped lang="scss">
 .enroll {
+  &__button__text {
+    font-size: 34rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+  }
   &-phone {
     color: $uni-color-primary;
   }

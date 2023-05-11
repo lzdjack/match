@@ -17,14 +17,14 @@
       "path": "pages/works/works",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "black"
       }
     },
     {
       "path": "pages/enroll/enroll",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "black"
       }
     },
 
@@ -48,6 +48,7 @@
     "selectedColor": "#1C8FBA",
     "borderStyle": "white",
     "backgroundColor": "#F8F8F8",
+    "fontSize": "12px",
     "list": [
       {
         "pagePath": "pages/main/main",
