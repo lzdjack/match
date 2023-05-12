@@ -161,13 +161,10 @@ export default {
       const height = e.changedTouches[0].clientY;
       const screenHeight = uni.$u.sys().screenHeight;
       const bScreenHeight = screenHeight / 2;
-      const moveHeight = screenHeight - height; //手势越往下滑
+      const moveHeight = screenHeight - height;
+      this.isUp = height - this.currentHeight > 5 ? false : true;
 
-      // true：向上
-      // false: 向下
-      this.isUp = height - this.currentHeight > 10 ? false : true;
-
-      if (moveHeight <= DEFINE_MODEL_HEIGHT) {
+      if (!this.isUp && moveHeight < bScreenHeight) {
         this.height = DEFINE_MODEL_HEIGHT;
       } else if (moveHeight > bScreenHeight && this.isUp) {
         this.height = this.getFull();
@@ -182,11 +179,10 @@ export default {
       const bScreenHeight = screenHeight / 2;
 
       const moveHeight = screenHeight - height;
-
-      if (moveHeight <= DEFINE_MODEL_HEIGHT) {
+      if (!this.isUp && moveHeight < bScreenHeight) {
         this.height = DEFINE_MODEL_HEIGHT;
         this.recordHeight = this.height;
-      } else if (moveHeight > bScreenHeight) {
+      } else if (moveHeight > bScreenHeight && this.isUp) {
         this.height = this.getFull();
         this.recordHeight = this.height;
       } else {

@@ -155,15 +155,15 @@
             src="../../static/success.png"
           ></image>
         </view>
-        <view class="text-center mt-4 enroll__success">报名成功</view>
+        <view class="text-center mt-4 enroll__success">注册成功</view>
         <view class="mt-2 enroll__success__text">
-          恭喜您报名成功，请到大赛官网
+          该手机号已经注册成功，请您登录网站
           <uni-link
             href="http://www.tgcid.org"
             text="http://www.tgcid.org"
             color="#007aff"
           ></uni-link>
-          上传作品吧～</view
+          完成报名信息～</view
         >
       </view>
       <u-button
@@ -352,7 +352,11 @@ export default {
         });
 
         this.show = true;
-      } catch (error) {}
+      } catch (error) {
+        if (error.data.suc == 0 && error.data.msg == "该用户信息已存在！") {
+          this.show = true;
+        }
+      }
     },
   },
 };

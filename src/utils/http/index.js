@@ -69,8 +69,6 @@ http.interceptors.response.use(
 
     if (response.data.suc != 1) {
       // 服务端返回的状态码不等于true，则reject()
-      const errorMsg = response.data.message || response.data.msg;
-      showTimeOutToast(errorMsg);
       return Promise.reject(response);
     }
 
@@ -89,20 +87,17 @@ http.interceptors.response.use(
       }
     } else if (JSON.stringify(response).indexOf("timeout") !== -1) {
       showTimeOutToast("网络请求超时");
-      throw Error("网络请求超时");
     } else if (JSON.stringify(response).indexOf("Network Error") !== -1) {
       showTimeOutToast("网络请求错误");
-      throw Error("网络请求错误");
     } else {
       const errorMsg = response.data?.message || response.data?.msg;
       if (errorMsg) {
         showTimeOutToast(errorMsg);
-        throw Error(errorMsg);
       } else {
         showTimeOutToast("异常错误");
-        throw Error("异常错误");
       }
     }
+
     return response;
   }
 );
