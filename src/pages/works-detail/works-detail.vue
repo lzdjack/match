@@ -27,7 +27,7 @@
       ></u--image>
     </view>
     <u-popup :show="show" :overlay="false" :round="20" mode="bottom">
-      <view :style="{ height: $u.addUnit($u.getPx(height)) }">
+      <view>
         <view
           class="flex justify-center align-center"
           @click="open"
@@ -63,11 +63,23 @@ export default {
     return {
       id: null,
       show: false,
+      // popup 最后的高度
       height: DEFINE_MODEL_HEIGHT,
       isUp: false,
       custom: {},
+      // 默认的popup高度
       recordHeight: DEFINE_MODEL_HEIGHT,
+      // 手势滑动的高度
       currentHeight: 0,
+      // 去除appbar和状态栏剩余的高度
+      fullHeight: 0,
+      // 半屏高度
+      bScreenHeight: 0,
+      // 屏幕高度
+      screenHeight: 0,
+      // 状态栏的高度
+      statusBarHeight: 0,
+
       dataInfo: {
         id: "",
         title: "",
@@ -79,11 +91,13 @@ export default {
   },
   computed: {
     getImageHeight() {
-      const statusBarHeight = uni.$u.sys().statusBarHeight;
-      const screenHeight = uni.$u.sys().screenHeight;
       const appbarHeight = 44;
       return (
-        screenHeight - statusBarHeight - appbarHeight - DEFINE_MODEL_HEIGHT - 60
+        this.screenHeight -
+        this.statusBarHeight -
+        appbarHeight -
+        DEFINE_MODEL_HEIGHT -
+        60
       );
     },
   },
@@ -98,6 +112,7 @@ export default {
     setTimeout(() => {
       this.show = true;
     }, 50);
+    this.handleDefaultData();
     this.init();
   },
   methods: {
@@ -124,24 +139,25 @@ export default {
         showToast("发生异常");
       }
     },
+    handleDefaultData() {
+      this.screenHeight = uni.$u.sys().screenHeight;
+      this.statusBarHeight = uni.$u.sys().statusBarHeight;
+
+      const customHeight =
+        this.custom.bottom + this.custom.top - this.statusBarHeight;
+      this.fullHeight =
+        this.screenHeight - customHeight - uni.$u.sys().safeAreaInsets.bottom;
+
+      this.bScreenHeight = this.screenHeight / 2;
+    },
     open() {
       if (this.isUp) {
         this.isUp = false;
         this.height = DEFINE_MODEL_HEIGHT;
       } else {
         this.isUp = true;
-        this.height = this.getFull();
+        this.height = this.fullHeight;
       }
-    },
-    getFull() {
-      const customHeight =
-        this.custom.bottom + this.custom.top - uni.$u.sys().statusBarHeight;
-
-      return (
-        uni.$u.sys().screenHeight -
-        customHeight -
-        uni.$u.sys().safeAreaInsets.bottom
-      );
     },
     back() {
       this.show = false;
@@ -159,15 +175,13 @@ export default {
     },
     handleMove(e) {
       const height = e.changedTouches[0].clientY;
-      const screenHeight = uni.$u.sys().screenHeight;
-      const bScreenHeight = screenHeight / 2;
-      const moveHeight = screenHeight - height;
+      const moveHeight = this.screenHeight - height;
       this.isUp = height - this.currentHeight > 5 ? false : true;
 
-      if (!this.isUp && moveHeight < bScreenHeight) {
+      if (!this.isUp && moveHeight < this.bScreenHeight) {
         this.height = DEFINE_MODEL_HEIGHT;
-      } else if (moveHeight > bScreenHeight && this.isUp) {
-        this.height = this.getFull();
+      } else if (moveHeight > this.bScreenHeight && this.isUp) {
+        this.height = this.fullHeight;
       } else {
         this.height = moveHeight;
       }
@@ -175,15 +189,13 @@ export default {
 
     handleEnd(e) {
       const height = e.changedTouches[0].clientY;
-      const screenHeight = uni.$u.sys().screenHeight;
-      const bScreenHeight = screenHeight / 2;
 
-      const moveHeight = screenHeight - height;
-      if (!this.isUp && moveHeight < bScreenHeight) {
+      const moveHeight = this.screenHeight - height;
+      if (!this.isUp && moveHeight < this.bScreenHeight) {
         this.height = DEFINE_MODEL_HEIGHT;
         this.recordHeight = this.height;
-      } else if (moveHeight > bScreenHeight && this.isUp) {
-        this.height = this.getFull();
+      } else if (moveHeight > this.bScreenHeight && this.isUp) {
+        this.height = this.fullHeight;
         this.recordHeight = this.height;
       } else {
         this.height = this.recordHeight;
