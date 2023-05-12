@@ -134,7 +134,7 @@
       <u-button
         type="primary"
         shape="circle"
-        customStyle="margin-top: 100rpx;margin-bottom: 150rpx;width: 630rpx"
+        customStyle="margin-top: 100rpx;margin-bottom: 150rpx;width: 630rpx; height: 90rpx"
         color="linear-gradient(to right, #3ED3EA 0%, #0270EF 100%)"
         @click="submit"
         ><text class="enroll__button__text">提交报名</text>
