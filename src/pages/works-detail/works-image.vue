@@ -42,7 +42,7 @@
                 customClass="works-swiper__wrapper__item__area__wrapper__image"
                 :showLoading="true"
                 :lazy-load="true"
-                :src="path"
+                :src="item"
                 :fade="true"
                 mode="aspectFill"
               ></u--image>
@@ -70,15 +70,15 @@ export default {
       indicatorActiveColor: "#FFFFFF",
       indicatorInactiveColor: "rgba(255, 255, 255, 0.35)",
       currentIndex: 0,
-      list: [1],
+      list: [],
       indicatorMode: "line",
       height: 0,
-      path: "",
       touchNum: 0,
     };
   },
   onLoad(e) {
-    this.path = e.url ?? "";
+    const urls = JSON.parse(e.urls);
+    this.list = urls ?? [];
     this.height = uni.$u.sys().screenHeight;
   },
   methods: {

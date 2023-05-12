@@ -14,18 +14,40 @@
       </view>
     </view>
     <view
-      class="main__content w-100 h-100 flex justify-center align-center"
+      class="position-relative w-100"
       :style="{ height: $u.addUnit($u.getPx(getImageHeight)) }"
-      @click="handleGo"
     >
-      <u--image
-        :showLoading="true"
-        :lazy-load="true"
-        :src="dataInfo.url"
-        :fade="true"
-        mode="aspectFill"
-      ></u--image>
+      <swiper
+        class="w-100"
+        :style="{ height: $u.addUnit($u.getPx(getImageHeight)) }"
+        @change="handleChange"
+      >
+        <swiper-item
+          v-for="(item, index) in dataInfo.urls"
+          :key="index"
+          class="w-100"
+        >
+          <view
+            class="main__content w-100 h-100 flex justify-center align-center"
+            @click="handleGo"
+          >
+            <u--image
+              :showLoading="true"
+              :lazy-load="true"
+              :src="item"
+              :fade="true"
+              mode="aspectFill"
+            ></u--image>
+          </view>
+        </swiper-item>
+      </swiper>
+      <view
+        class="text-white position-absolute bottom-0 m-auto"
+        style="right: 50rpx"
+        >{{ currentIndex + 1 }}/{{ dataInfo.urls.length }}</view
+      >
     </view>
+
     <u-popup :show="show" :overlay="false" :round="20" mode="bottom">
       <view>
         <view
@@ -61,6 +83,7 @@ const DEFINE_MODEL_HEIGHT = 280;
 export default {
   data() {
     return {
+      currentIndex: 0,
       id: null,
       show: false,
       // popup 最后的高度
@@ -85,7 +108,7 @@ export default {
         title: "",
         subTitle: "",
         description: "",
-        url: "",
+        urls: [],
       },
     };
   },
@@ -131,7 +154,7 @@ export default {
             title: data.Enrollname,
             subTitle: data.Schoolname,
             description: data.Createnote,
-            url: data.filenames,
+            urls: data.imgfiles,
           };
         }
       } catch (e) {
@@ -166,8 +189,9 @@ export default {
       }, 50);
     },
     handleGo() {
+      const urls = JSON.stringify(this.dataInfo.urls);
       uni.navigateTo({
-        url: `/pages/works-detail/works-image?url=${this.dataInfo.url}`,
+        url: `/pages/works-detail/works-image?urls=${urls}`,
       });
     },
     handleStart(e) {
@@ -200,6 +224,9 @@ export default {
       } else {
         this.height = this.recordHeight;
       }
+    },
+    handleChange(e) {
+      this.currentIndex = e.detail.current;
     },
   },
 };
