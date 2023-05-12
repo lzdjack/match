@@ -3,7 +3,7 @@
     <view class="fixed-top">
       <u-status-bar />
       <view
-        class="flex justify-between align-center works-swiper__header"
+        class="flex justify-between align-center works-swiper__header bg-transparent-black"
         :style="{ height: $u.addUnit($u.getPx(44)) }"
       >
         <view class="ml-3" @click="back">
@@ -40,11 +40,13 @@
             >
               <u--image
                 customClass="works-swiper__wrapper__item__area__wrapper__image"
+                height="100vh"
+                width="100vw"
                 :showLoading="true"
                 :lazy-load="true"
                 :src="item"
                 :fade="true"
-                mode="aspectFill"
+                mode="scaleToFill"
               ></u--image>
             </view>
           </movable-view>

@@ -806,6 +806,9 @@
 .bg-hover-dark {
   background-color: #1d2124;
 }
+.bg-transparent-black {
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .bg-white {
   background-color: #ffffff;
 }

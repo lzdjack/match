@@ -32,14 +32,14 @@
       "path": "pages/works-detail/works-detail",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "black"
       }
     },
     {
       "path": "pages/works-detail/works-image",
       "style": {
         "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "black"
       }
     }
   ],

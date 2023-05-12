@@ -1,6 +1,6 @@
 <template>
   <view class="main">
-    <view @click="isUp && open()">
+    <view class="fixed-top" @click="isUp && open()">
       <u-status-bar />
       <view
         class="flex justify-between align-center main__header"
@@ -25,43 +25,43 @@
         <swiper-item
           v-for="(item, index) in dataInfo.urls"
           :key="index"
-          class="w-100"
+          class="w-100 h-100"
         >
-          <view
-            class="main__content w-100 h-100 flex justify-center align-center"
-            @click="handleGo"
-          >
+          <view class="main__content w-100 h-100" @click="handleGo">
             <u--image
+              width="100%"
+              :height="$u.addUnit($u.getPx(getImageHeight))"
               :showLoading="true"
               :lazy-load="true"
               :src="item"
               :fade="true"
-              mode="aspectFill"
+              mode="scaleToFill"
             ></u--image>
           </view>
         </swiper-item>
       </swiper>
       <view
-        class="text-white position-absolute bottom-0 m-auto"
-        style="right: 50rpx"
+        class="text-white position-absolute bottom-0 m-auto bg-transparent-black rounded-xxl px-3 py-1"
+        style="right: 50rpx; bottom: 100rpx"
         >{{ currentIndex + 1 }}/{{ dataInfo.urls.length }}</view
       >
     </view>
 
     <u-popup :show="show" :overlay="false" :round="20" mode="bottom">
-      <view>
-        <view
-          class="flex justify-center align-center"
-          @click="open"
-          @touchmove="handleMove"
-          @touchend="handleEnd"
-          @touchstart="handleStart"
-        >
+      <view
+        class="popup-works"
+        :style="{ height: $u.addUnit($u.getPx(height)) }"
+        @click="open"
+        @touchmove="handleMove"
+        @touchend="handleEnd"
+        @touchstart="handleStart"
+      >
+        <view class="popup__header">
           <view class="popup__move"></view>
         </view>
         <scroll-view
           scroll-y="true"
-          :style="{ height: $u.addUnit($u.getPx(height - 60)) }"
+          :style="{ height: $u.addUnit($u.getPx(height - 50)) }"
         >
           <view class="popup__content mx-4">
             <view class="popup__content__title">{{ dataInfo.title }}</view>
@@ -90,8 +90,6 @@ export default {
       height: DEFINE_MODEL_HEIGHT,
       isUp: false,
       custom: {},
-      // 默认的popup高度
-      recordHeight: DEFINE_MODEL_HEIGHT,
       // 手势滑动的高度
       currentHeight: 0,
       // 去除appbar和状态栏剩余的高度
@@ -102,6 +100,13 @@ export default {
       screenHeight: 0,
       // 状态栏的高度
       statusBarHeight: 0,
+      //
+      topPopup: 0,
+      bottomPopup: 0,
+      maxPopupHeight: 0,
+      // 默认的popup高度
+      mixPopupHeight: DEFINE_MODEL_HEIGHT,
+      aHeight: DEFINE_MODEL_HEIGHT,
 
       dataInfo: {
         id: "",
@@ -114,13 +119,11 @@ export default {
   },
   computed: {
     getImageHeight() {
-      const appbarHeight = 44;
       return (
         this.screenHeight -
-        this.statusBarHeight -
-        appbarHeight -
         DEFINE_MODEL_HEIGHT -
-        60
+        uni.$u.sys().safeAreaInsets.bottom +
+        25
       );
     },
   },
@@ -132,9 +135,7 @@ export default {
     }
 
     this.custom = wx.getMenuButtonBoundingClientRect();
-    setTimeout(() => {
-      this.show = true;
-    }, 50);
+    this.show = true;
     this.handleDefaultData();
     this.init();
   },
@@ -165,13 +166,12 @@ export default {
     handleDefaultData() {
       this.screenHeight = uni.$u.sys().screenHeight;
       this.statusBarHeight = uni.$u.sys().statusBarHeight;
-
-      const customHeight =
-        this.custom.bottom + this.custom.top - this.statusBarHeight;
-      this.fullHeight =
-        this.screenHeight - customHeight - uni.$u.sys().safeAreaInsets.bottom;
-
       this.bScreenHeight = this.screenHeight / 2;
+      this.maxPopupHeight =
+        this.screenHeight -
+        this.statusBarHeight -
+        44 -
+        uni.$u.sys().safeAreaInsets.top;
     },
     open() {
       if (this.isUp) {
@@ -196,24 +196,38 @@ export default {
     },
     handleStart(e) {
       this.currentHeight = e.touches[0].clientY;
+      this.aHeight = this.height;
     },
     handleMove(e) {
-      const height = e.changedTouches[0].clientY;
-      const moveHeight = this.screenHeight - height;
-      this.isUp = height - this.currentHeight > 5 ? false : true;
-
-      if (!this.isUp && moveHeight < this.bScreenHeight) {
-        this.height = DEFINE_MODEL_HEIGHT;
-      } else if (moveHeight > this.bScreenHeight && this.isUp) {
-        this.height = this.fullHeight;
-      } else {
-        this.height = moveHeight;
-      }
+      this.move(e);
     },
+    move(e) {
+      console.log(e);
+      const height = e.changedTouches[0].clientY;
+      // const moveHeight = this.screenHeight - height;
+      this.isUp = height - this.currentHeight > 5 ? false : true;
+      const moveHeight = Math.abs(height - this.currentHeight);
 
+      if (this.isUp) {
+        if (this.height < this.maxPopupHeight) {
+          this.height = this.aHeight + moveHeight;
+        }
+      } else {
+        if (this.height > this.mixPopupHeight) {
+          this.height = this.aHeight - moveHeight;
+        }
+      }
+
+      // if (!this.isUp && moveHeight < this.bScreenHeight) {
+      //   this.height = DEFINE_MODEL_HEIGHT;
+      // } else if (moveHeight > this.bScreenHeight && this.isUp) {
+      //   this.height = this.fullHeight;
+      // } else {
+      //   this.height = moveHeight;
+      // }
+    },
     handleEnd(e) {
       const height = e.changedTouches[0].clientY;
-
       const moveHeight = this.screenHeight - height;
       if (!this.isUp && moveHeight < this.bScreenHeight) {
         this.height = DEFINE_MODEL_HEIGHT;
@@ -248,9 +262,14 @@ export default {
   }
 }
 
+.popup__header {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .popup__move {
-  margin-top: 15px;
-  margin-bottom: 40px;
   height: 5px;
   width: 50px;
   background-color: #bcbcbc;
