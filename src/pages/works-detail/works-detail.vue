@@ -46,7 +46,13 @@
         >{{ currentIndex + 1 }}/{{ dataInfo.urls.length }}</view
       >
     </view>
-    <u-popup :show="true" :overlay="false" :round="20" mode="bottom">
+    <u-popup
+      :show="true"
+      :overlay="false"
+      :round="20"
+      mode="bottom"
+      customStyle="background-color: #fffcf8;"
+    >
       <view
         class="popup__works"
         :style="{ height: $u.addUnit($u.getPx(height)) }"
@@ -294,7 +300,6 @@ export default {
   }
 }
 .popup__works {
-  background-color: #fffcf8;
 }
 .popup__header {
   height: 50px;
