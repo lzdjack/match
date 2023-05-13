@@ -152,7 +152,7 @@ export default {
         this.screenHeight -
         DEFINE_MODEL_HEIGHT -
         uni.$u.sys().safeAreaInsets.bottom +
-        50
+        25
       );
     },
     // 内容高度
