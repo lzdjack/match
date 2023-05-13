@@ -896,9 +896,13 @@
 .rounded-xxl {
   border-radius: 44rpx;
 }
-.rounded-top {
+.rounded-top-2 {
   border-top-left-radius: 8rpx;
   border-top-right-radius: 8rpx;
+}
+.rounded-top-4 {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 .rounded-top-lg {
   border-top-left-radius: 14rpx;

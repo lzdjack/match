@@ -4,7 +4,7 @@
       <u-status-bar />
       <view
         class="flex justify-between align-center main__header"
-        :style="{ height: $u.addUnit($u.getPx(44)) }"
+        :style="{ height: $u.addUnit($u.getPx(navHeight)) }"
       >
         <view class="ml-3" @click="back">
           <u-icon color="#ffffff" name="arrow-left"></u-icon>
@@ -35,33 +35,33 @@
               :lazy-load="true"
               :src="item"
               :fade="true"
-              mode="scaleToFill"
+              mode="aspectFit"
             ></u--image>
           </view>
         </swiper-item>
       </swiper>
       <view
         class="text-white position-absolute bottom-0 m-auto bg-transparent-black rounded-xxl px-3 py-1"
-        style="right: 50rpx; bottom: 100rpx"
+        style="right: 30rpx; bottom: 80rpx"
         >{{ currentIndex + 1 }}/{{ dataInfo.urls.length }}</view
       >
     </view>
-
-    <u-popup :show="show" :overlay="false" :round="20" mode="bottom">
+    <u-popup :show="true" :overlay="false" :round="20" mode="bottom">
       <view
-        class="popup-works"
         :style="{ height: $u.addUnit($u.getPx(height)) }"
         @click="open"
         @touchmove="handleMove"
         @touchend="handleEnd"
         @touchstart="handleStart"
       >
-        <view class="popup__header">
+        <view
+          class="flex justify-center align-center popup__header popup__works"
+        >
           <view class="popup__move"></view>
         </view>
         <scroll-view
           scroll-y="true"
-          :style="{ height: $u.addUnit($u.getPx(height - 50)) }"
+          :style="{ height: $u.addUnit($u.getPx(contentHeight)) }"
         >
           <view class="popup__content mx-4">
             <view class="popup__content__title">{{ dataInfo.title }}</view>
@@ -72,6 +72,33 @@
         </scroll-view>
       </view>
     </u-popup>
+    <!-- <view
+      class="w-100 fixed-bottom popup__works rounded-top-4"
+      :style="{ height: $u.addUnit($u.getPx(mixPopupHeight)) }"
+      :animation="animationData"
+      @click="open"
+      @touchmove="handleMove"
+      @touchend="handleEnd"
+      @touchstart="handleStart"
+    >
+      <view class="popup__header">
+        <view class="popup__move"></view>
+      </view>
+
+      <scroll-view
+        class="h-100"
+        scroll-y="true"
+        :style="{ height: $u.addUnit($u.getPx(contentHeight)) }"
+      >
+        <view class="popup__content mx-4">
+          <view class="popup__content__title">{{ dataInfo.title }}</view>
+          <view class="popup__content__sub">作者：{{ dataInfo.subTitle }}</view>
+          <view class="popup__content__pro">作品简介</view>
+          <view class="popup__content__dec">{{ dataInfo.description }} </view>
+        </view>
+      </scroll-view>
+      <u-safe-bottom></u-safe-bottom>
+    </view> -->
   </view>
 </template>
 
@@ -79,35 +106,32 @@
 import { findByIdWorksDetailApi } from "@/api/api.js";
 import { isEmpty } from "lodash-es";
 import { showLoading, hideLoading, showToast } from "@/utils/loading.js";
-const DEFINE_MODEL_HEIGHT = 280;
+const DEFINE_MODEL_HEIGHT = 300;
 export default {
   data() {
     return {
+      animation: null,
+      animationData: {},
       currentIndex: 0,
       id: null,
-      show: false,
+      // 判断当前手势滑动的方向
+      isUp: false,
       // popup 最后的高度
       height: DEFINE_MODEL_HEIGHT,
-      isUp: false,
-      custom: {},
-      // 手势滑动的高度
+      // 手势开始滑动滑动的高度
       currentHeight: 0,
-      // 去除appbar和状态栏剩余的高度
-      fullHeight: 0,
-      // 半屏高度
-      bScreenHeight: 0,
       // 屏幕高度
       screenHeight: 0,
       // 状态栏的高度
       statusBarHeight: 0,
-      //
-      topPopup: 0,
-      bottomPopup: 0,
+      // 最大的popup高度
       maxPopupHeight: 0,
       // 默认的popup高度
       mixPopupHeight: DEFINE_MODEL_HEIGHT,
-      aHeight: DEFINE_MODEL_HEIGHT,
-
+      // 手势滑动之前popup的高度
+      beforePopupHeight: DEFINE_MODEL_HEIGHT,
+      // nav 高度
+      navHeight: 44,
       dataInfo: {
         id: "",
         title: "",
@@ -126,20 +150,31 @@ export default {
         25
       );
     },
+    // 内容高度
+    contentHeight() {
+      return this.height - 50;
+    },
   },
   onLoad(e) {
+    this.animation = uni.createAnimation({
+      duration: 50,
+    });
+
     if (e && !isEmpty(e) && e.id) {
       this.id = e.id;
     } else {
       showToast("数据异常");
     }
 
-    this.custom = wx.getMenuButtonBoundingClientRect();
     this.show = true;
     this.handleDefaultData();
     this.init();
   },
   methods: {
+    start() {
+      this.animation.height(this.height).step();
+      this.animationData = this.animation.export();
+    },
     async init() {
       try {
         showLoading();
@@ -166,78 +201,76 @@ export default {
     handleDefaultData() {
       this.screenHeight = uni.$u.sys().screenHeight;
       this.statusBarHeight = uni.$u.sys().statusBarHeight;
-      this.bScreenHeight = this.screenHeight / 2;
       this.maxPopupHeight =
         this.screenHeight -
         this.statusBarHeight -
-        44 -
+        this.navHeight -
         uni.$u.sys().safeAreaInsets.top;
     },
     open() {
       if (this.isUp) {
         this.isUp = false;
         this.height = DEFINE_MODEL_HEIGHT;
+        // this.start();
       } else {
         this.isUp = true;
-        this.height = this.fullHeight;
+        this.height = this.maxPopupHeight;
+        // this.start();
       }
     },
     back() {
       this.show = false;
-      setTimeout(() => {
-        uni.navigateBack();
-      }, 50);
+      uni.navigateBack();
     },
     handleGo() {
-      const urls = JSON.stringify(this.dataInfo.urls);
-      uni.navigateTo({
-        url: `/pages/works-detail/works-image?urls=${urls}`,
+      uni.previewImage({
+        current: this.currentIndex,
+        urls: this.dataInfo.urls,
       });
     },
     handleStart(e) {
       this.currentHeight = e.touches[0].clientY;
-      this.aHeight = this.height;
+      this.beforePopupHeight = this.height;
     },
     handleMove(e) {
-      this.move(e);
-    },
-    move(e) {
-      console.log(e);
       const height = e.changedTouches[0].clientY;
-      // const moveHeight = this.screenHeight - height;
-      this.isUp = height - this.currentHeight > 5 ? false : true;
-      const moveHeight = Math.abs(height - this.currentHeight);
+      const moveHeight =
+        height - this.currentHeight > 0
+          ? height - this.currentHeight
+          : -(height - this.currentHeight);
+      this.isUp = height - this.currentHeight > 1 ? false : true;
 
       if (this.isUp) {
         if (this.height < this.maxPopupHeight) {
-          this.height = this.aHeight + moveHeight;
+          this.height = this.beforePopupHeight + moveHeight;
         }
       } else {
         if (this.height > this.mixPopupHeight) {
-          this.height = this.aHeight - moveHeight;
+          this.height = this.beforePopupHeight - moveHeight;
         }
       }
 
-      // if (!this.isUp && moveHeight < this.bScreenHeight) {
-      //   this.height = DEFINE_MODEL_HEIGHT;
-      // } else if (moveHeight > this.bScreenHeight && this.isUp) {
-      //   this.height = this.fullHeight;
-      // } else {
-      //   this.height = moveHeight;
-      // }
+      // this.start();
     },
     handleEnd(e) {
       const height = e.changedTouches[0].clientY;
-      const moveHeight = this.screenHeight - height;
-      if (!this.isUp && moveHeight < this.bScreenHeight) {
-        this.height = DEFINE_MODEL_HEIGHT;
-        this.recordHeight = this.height;
-      } else if (moveHeight > this.bScreenHeight && this.isUp) {
-        this.height = this.fullHeight;
-        this.recordHeight = this.height;
+      const moveHeight = Math.abs(height - this.currentHeight);
+
+      if (moveHeight > 100) {
+        if (this.isUp) {
+          this.height = this.maxPopupHeight;
+        } else {
+          this.height = this.mixPopupHeight;
+        }
       } else {
-        this.height = this.recordHeight;
+        if (this.isUp) {
+          this.height = this.mixPopupHeight;
+        } else {
+          this.height = this.maxPopupHeight;
+        }
       }
+
+      // this.start();
     },
     handleChange(e) {
       this.currentIndex = e.detail.current;
@@ -261,7 +294,9 @@ export default {
     }
   }
 }
-
+.popup__works {
+  background-color: #fffcf8;
+}
 .popup__header {
   height: 50px;
   display: flex;
