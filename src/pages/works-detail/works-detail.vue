@@ -48,15 +48,14 @@
     </view>
     <u-popup :show="true" :overlay="false" :round="20" mode="bottom">
       <view
+        class="popup__works"
         :style="{ height: $u.addUnit($u.getPx(height)) }"
         @click="open"
         @touchmove="handleMove"
         @touchend="handleEnd"
         @touchstart="handleStart"
       >
-        <view
-          class="flex justify-center align-center popup__header popup__works"
-        >
+        <view class="flex justify-center align-center popup__header">
           <view class="popup__move"></view>
         </view>
         <scroll-view
