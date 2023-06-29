@@ -24,6 +24,20 @@
         >
           <view
             class="text-center main__content__intro-line font font-weight-normal"
+            >“在新的起点上继续推动文化繁荣、建设文化
+          </view>
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >强国、建设中华民族现代文明，是我们在新时
+          </view>
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            style="margin-bottom: 40rpx"
+            >代新的文化使命。”
+          </view>
+
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
             >悠悠运河，流淌千年，
           </view>
           <view
@@ -32,28 +46,40 @@
           >
           <view
             class="text-center main__content__intro-line font font-weight-normal"
-          >
-            第三届大运河文化创新创意设计大赛</view
-          >
-          <view
-            class="text-center main__content__intro-line font font-weight-normal"
-            >以“创意，应‘运’而生”为主题</view
-          >
-          <view
-            class="text-center main__content__intro-line font font-weight-normal"
-            >开设六大赛道，广泛邀请设计爱好者和设计单位
+            >是展示中华文明的亮丽名片
           </view>
           <view
             class="text-center main__content__intro-line font font-weight-normal"
-            >围绕运河文化进行创意设计</view
+          >
+            第三届大运河文化创新创意设计大赛以“创</view
           >
           <view
             class="text-center main__content__intro-line font font-weight-normal"
-            >以文创精神激荡历史长河</view
+            >意，应运而生”为主题开设六大赛道，</view
           >
           <view
             class="text-center main__content__intro-line font font-weight-normal"
-            >让悠久的运河文化融入当代美好生活！</view
+            >立足新时代人民对美好生活的追求，依托大运</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >河厚重的历史底蕴和丰富的历史文化资源，结</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >合新时代审美与工艺，广泛邀请设计爱好者和</view
+          >
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >设计单位围绕运河文化进行创意设计，
+          </view>
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >赋予大运河文化以现代力量，并为中华民族的
+          </view>
+          <view
+            class="text-center main__content__intro-line font font-weight-normal"
+            >文化繁荣注入新的活力！</view
           >
           <view
             class="text-center main__content__intro-line font font-weight-normal"
